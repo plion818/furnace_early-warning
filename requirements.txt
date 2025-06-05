@@ -1,6 +1,15 @@
+# FastAPI backend
 fastapi
 uvicorn[standard]
+python-multipart
+
+# Data handling
 pandas
 numpy
-python-multipart
+
+# Streamlit frontend
+streamlit
+plotly
+
+# Common HTTP client
 requests
