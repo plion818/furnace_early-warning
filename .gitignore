@@ -1,0 +1,6 @@
+data\processed\sensorID_28_filtered.csv
+data\processed\sensorID_28_missing_filled.csv
+data\processed\sensorID_28_standardized.csv
+data\raw\加熱爐資料(to 0410).csv
+results/s1_anomaly_results.csv
+results/scores.csv
