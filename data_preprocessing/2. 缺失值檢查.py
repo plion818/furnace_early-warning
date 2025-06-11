@@ -36,3 +36,23 @@ print(df_filled.isna().sum())
 # output_path = "data/processed/sensorID_28_missing_filled.csv"
 # df_filled.to_csv(output_path, index=False)
 # print(f"\n填補後的資料已儲存至: {output_path}")
+
+# 額外匯出缺失樣本狀態
+missing_cols = ['current', 'voltage', 'resistance', 'temperature']
+output_missing = []
+for idx, row in df.iterrows():
+    record = {'record Time': row.get('record Time', None)}
+    has_missing = False
+    for col in missing_cols:
+        is_missing = int(pd.isna(row.get(col, None)))
+        record[col] = is_missing
+        if is_missing:
+            has_missing = True
+    if has_missing:
+        output_missing.append(record)
+
+if output_missing:
+    missing_df = pd.DataFrame(output_missing)
+    missing_output_path = "data/processed/sensorID_28_missing_samples.csv"
+    missing_df.to_csv(missing_output_path, index=False)
+    print(f"\n缺失樣本狀態已儲存至: {missing_output_path}")

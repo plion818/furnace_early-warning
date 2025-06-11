@@ -20,10 +20,10 @@ app = FastAPI(
 @app.post("/detect_anomaly/")
 async def create_detection_task(
     file: UploadFile = File(..., description="CSV file containing 'resistance', 'resistance_scaled', and 'record Time' columns."),
-    window_size: int = Query(50, gt=0, description="The number of data points in the sliding window."),
-    z_thresh: float = Query(3.0, gt=0, description="The Z-score threshold to identify outliers."),
-    stride: int = Query(1, gt=0, description="The step size for moving the sliding window."),
-    vote_threshold: float = Query(0.5, ge=0, le=1, description="Threshold (0 to 1) for the anomaly score to be considered a final anomaly.")
+    window_size: int = Query(..., gt=0, description="The number of data points in the sliding window. (必填)"),
+    z_thresh: float = Query(..., gt=0, description="The Z-score threshold to identify outliers. (必填)"),
+    stride: int = Query(..., gt=0, description="The step size for moving the sliding window. (必填)"),
+    vote_threshold: float = Query(..., ge=0, le=1, description="Threshold (0 to 1) for the anomaly score. (必填)")
 ):
     """
     Detects anomalies in uploaded CSV data.
