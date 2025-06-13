@@ -1,3 +1,4 @@
+
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -7,6 +8,8 @@ import plotly.express as px # 匯入 Plotly Express
 import requests # For API calls
 import io # For converting DataFrame to in-memory CSV
 from anomaly_marker import AnomalyMarker
+from dotenv import load_dotenv
+import os
 
 # === 頁面基礎設定 (必須是第一個 Streamlit 指令) ===
 st.set_page_config(
@@ -15,8 +18,11 @@ st.set_page_config(
     layout="wide"
 )
 
-# === API 及資料路徑常數 ===
-API_URL = "http://127.0.0.1:8000/detect_anomaly/"
+
+# === 載入 .env 設定 ===
+load_dotenv()
+API_URL = os.getenv("API_URL")
+API_TOKEN = os.getenv("API_TOKEN")
 RAW_DATA_PATH = "data/processed/sensorID_28_standardized.csv"
 
 # === 載入主要感測資料 ===
@@ -75,7 +81,10 @@ def fetch_anomalies_from_api(input_df):
             "vote_threshold": 0.5
         }
 
-        response = requests.post(API_URL, files=files, params=api_params, timeout=180) # Increased timeout
+        headers = {}
+        if API_TOKEN:
+            headers["Authorization"] = f"Bearer {API_TOKEN}"
+        response = requests.post(API_URL, files=files, params=api_params, headers=headers, timeout=180) # Increased timeout
         response.raise_for_status()  # 若狀態碼為 4xx 或 5xx，則拋出 HTTPError
 
         response_data = response.json()

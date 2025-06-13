@@ -1,7 +1,12 @@
+
 import requests
 import os
+from dotenv import load_dotenv
 
-API_URL = "http://127.0.0.1:8000/detect_anomaly/"
+# 載入 .env 設定
+load_dotenv()
+API_URL = os.getenv("API_URL")
+API_TOKEN = os.getenv("API_TOKEN")
 LOCAL_CSV_PATH = os.path.join("data/processed/sensorID_28_standardized.csv")
 
 def call_anomaly_detection_api(
@@ -18,8 +23,11 @@ def call_anomaly_detection_api(
     try:
         with open(file_path, "rb") as f:
             files = {"file": (file_name, f, "text/csv")}
+            headers = {}
+            if API_TOKEN:
+                headers["Authorization"] = f"Bearer {API_TOKEN}"
             print(f"Calling API at {API_URL} with parameters: {params} and file: {file_name}")
-            response = requests.post(API_URL, params=params, files=files)
+            response = requests.post(API_URL, params=params, files=files, headers=headers)
             response.raise_for_status()
             return response.json()
     except FileNotFoundError:
