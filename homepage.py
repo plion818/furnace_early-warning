@@ -343,7 +343,7 @@ if selected_metrics:
                     showlegend=True, hoverinfo='text', text=normal_hover_texts
                 ))
     fig_scaled.update_layout(title='📊 標準化指標趨勢圖', xaxis_title='時間', yaxis_title='標準化數值', hovermode='closest', height=500, margin=dict(l=40, r=40, t=60, b=40), legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1, bgcolor='rgba(255,255,255,0.5)'))
-    st.plotly_chart(fig_scaled, use_container_width=True)
+    st.plotly_chart(fig_scaled, width="stretch")
 
 # === 原始數據圖表繪製 ===
 if raw_option != "none":
@@ -424,7 +424,7 @@ if raw_option != "none":
                     showlegend=True, hoverinfo='text', text=normal_hover_texts
                 ))
     fig_raw.update_layout(title=f'📈 原始指標趨勢圖: {raw_option.capitalize()}', xaxis_title='時間', yaxis_title='原始數值', hovermode='closest', height=500, margin=dict(l=40, r=40, t=60, b=40), legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1, bgcolor='rgba(255,255,255,0.5)'))
-    st.plotly_chart(fig_raw, use_container_width=True)
+    st.plotly_chart(fig_raw, width="stretch")
 
 # --- 匯出異常資料按鈕 ---
 if (selected_metrics or raw_option != "none") and show_anomaly and st.session_state.api_anomalies_data is not None and df_filtered['is_api_anomaly'].any():
@@ -486,7 +486,7 @@ if show_anomaly and st.session_state.processed_anomalies_df is not None:
         textposition='inside', insidetextanchor='middle', textfont_size=15, textfont_color="black",
         hovertemplate=("<b>%{customdata[0]}</b><br><br>Count: %{customdata[1]}<br>Percentage: %{customdata[2]:.1f}%<extra></extra>")
     )
-    st.plotly_chart(fig_stats, use_container_width=True)
+    st.plotly_chart(fig_stats, width="stretch")
 
 else:
     if show_anomaly: # Checkbox is ticked but no data in session state yet

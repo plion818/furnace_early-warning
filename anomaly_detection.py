@@ -68,10 +68,19 @@ def detect_resistance_outliers_by_window(df, window_size, z_thresh, stride, vote
             continue
 
         # Step 3: Check original window data points against the calculated threshold
-        for k in range(current_window_start, current_window_end):
-            window_hits[k] += 1 # Mark that this point was part of a processed window
-            if abs(resistance[k] - mean_res) > z_thresh * std_res:
-                anomaly_counts[k] += 1 # Increment anomaly vote for this point
+        # Step 3: Check original window data points against the calculated threshold
+        # Vectorized implementation to speed up processing
+        window_slice = slice(current_window_start, current_window_end)
+        window_hits[window_slice] += 1
+
+        window_data = resistance[window_slice]
+        # Calculate absolute difference and compare with threshold
+        is_outlier = np.abs(window_data - mean_res) > (z_thresh * std_res)
+        anomaly_counts[window_slice] += is_outlier
+
+        # Optional: Print progress every 5000 windows to show it's alive
+        if i % 5000 == 0:
+            print(f"Processing window ending at index {i}/{n_points}", end='\r')
 
     # Calculate anomaly score for each data point
     anomaly_score_array = np.zeros(n_points, dtype=float) # Use float for scores

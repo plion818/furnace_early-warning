@@ -5,3 +5,26 @@ data\processed\sensorID_28_missing_filled.csv
 data\raw\加熱爐資料(to 0410).csv
 results\s1_anomaly_results.csv
 results\hourly_interval.csv
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
